@@ -31,120 +31,122 @@ class _TravelHomeScreenState extends State<TravelHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      appBar: headerParts(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Popular Places",
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                    },
-                    child: const Text(
-                      "See All",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: blueTextColor,
+      // appBar: headerParts(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Popular Places",
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 15),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(bottom: 40),
-              child: Row(
-                children: List.generate(
-                  popular.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: GestureDetector(
+                    GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => PlaceDetailScreen(
-                              destination: popular[index],
-                            ),
-                          ),
-                        );
                       },
-                      child: PopularPlace(
-                        destination: popular[index],
+                      child: const Text(
+                        "See All",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: blueTextColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(bottom: 40),
+                child: Row(
+                  children: List.generate(
+                    popular.length,
+                    (index) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => PlaceDetailScreen(
+                                destination: popular[index],
+                              ),
+                            ),
+                          );
+                        },
+                        child: PopularPlace(
+                          destination: popular[index],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Recommendations for You",
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                    },
-                    child: const Text(
-                      "See All",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: blueTextColor,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Recommendations for You",
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                children: List.generate(
-                  recomendate.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: GestureDetector(
+                    GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => PlaceDetailScreen(
-                              destination: recomendate[index],
-                            ),
-                          ),
-                        );
                       },
-                      child: Recomendate(
-                        destination: recomendate[index],
+                      child: const Text(
+                        "See All",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: blueTextColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: List.generate(
+                    recomendate.length,
+                    (index) => Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => PlaceDetailScreen(
+                                destination: recomendate[index],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Recomendate(
+                          destination: recomendate[index],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-
-          ],
+        
+            ],
+          ),
         ),
       ),
     );
@@ -164,7 +166,7 @@ class _TravelHomeScreenState extends State<TravelHomeScreen> {
           ),
           const SizedBox(width: 5),
           Text(
-            "Jawa Timur",
+            "Ashwini",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w600,
               fontSize: 18,

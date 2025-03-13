@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_vehicle_planner/auth/pages/login.dart';
 import 'package:travel_vehicle_planner/home/pages/home_main.dart';
 import 'package:travel_vehicle_planner/tp/const.dart';
 import 'package:travel_vehicle_planner/tp/models/onboard_model.dart';
@@ -141,12 +143,18 @@ class _TravelOnBoardingScreenState extends State<TravelOnBoardingScreen> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushAndRemoveUntil(
+                              // Navigator.pushAndRemoveUntil(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (_) => HomeMainPage(),
+                              //     ),
+                              //     (route) => false);
+                             Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) => HomeMainPage(),
                                   ),
-                                  (route) => false);
+                                  );
                             },
                             child: Container(
                               height: 55,
@@ -186,26 +194,31 @@ class _TravelOnBoardingScreenState extends State<TravelOnBoardingScreen> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          const Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "already have account? ",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: "Already have an account? ",
+                                style: TextStyle(
+                                  fontSize: 16,
                                 ),
-                                TextSpan(
-                                  text: "Login",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                  ),
+                              ),
+                              TextSpan(
+                                text: "Login",
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
                                 ),
-                              ],
-                            ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                                  },
+                              ),
+                            ],
                           ),
+                        )
+
                         ],
                       ),
                     ),

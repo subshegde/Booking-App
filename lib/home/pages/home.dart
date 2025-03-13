@@ -1,6 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:travel_vehicle_planner/constant/baseurl/baseurl.dart';
+import 'package:travel_vehicle_planner/home/components/about_hotel.dart';
+import 'package:travel_vehicle_planner/home/components/about_travel.dart';
+import 'package:travel_vehicle_planner/home/components/about_vehicle.dart';
 import 'package:travel_vehicle_planner/home/components/curve_app_bar.dart';
 import 'package:travel_vehicle_planner/home/models/services.dart';
 import 'package:travel_vehicle_planner/tp/models/travel_model.dart';
@@ -18,8 +21,8 @@ class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
 
   bool travel = true;
-  bool hotels = true;
-  bool vehicles = true;
+  bool hotels = false;
+  bool vehicles = false;
 
   @override
   void initState() {
@@ -189,7 +192,8 @@ class _HomePageState extends State<HomePage> {
             ],),
           ),
           const SizedBox(height: 10,),
-          if(travel)...[          
+          if(travel)...[   
+            TravelContainer(),       
             Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,6 +286,13 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),],
+          if(hotels)...[
+            HotelContainer()
+          ],
+          if(vehicles)...[
+            VehicleBookingContainer()
+          ]
+        
         ],
       ),
     );

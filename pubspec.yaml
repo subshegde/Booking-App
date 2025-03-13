@@ -39,6 +39,7 @@ dependencies:
   tutorial_coach_mark: ^1.2.12
   shared_preferences: ^2.0.6
   logger:
+  msh_checkbox: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
 
     - assets/icons/navbar/
     - assets/icons/homepage/
+    - assets/icons/auth/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
