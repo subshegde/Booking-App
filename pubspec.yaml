@@ -73,6 +73,12 @@ flutter:
     - assets/icons/homepage/
     - assets/icons/auth/
 
+    - assets/hotel/popular/
+    - assets/hotel/recomend/
+
+    - assets/vehicle/popular/
+    - assets/vehicle/recomend/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:travel_vehicle_planner/components/seeAll.dart';
 import 'package:travel_vehicle_planner/tp/const.dart';
 import 'package:travel_vehicle_planner/tp/pages/place_detail.dart';
 import 'package:travel_vehicle_planner/tp/widgets/popular_place.dart';
@@ -51,6 +52,7 @@ class _TravelHomeScreenState extends State<TravelHomeScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const SeeAllPage(pagename: "place",which: "Popular",)));
                       },
                       child: const Text(
                         "See All",
@@ -105,6 +107,7 @@ class _TravelHomeScreenState extends State<TravelHomeScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const SeeAllPage(pagename: "place",which: "Recomended",)));   
                       },
                       child: const Text(
                         "See All",

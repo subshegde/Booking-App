@@ -6,7 +6,9 @@ import 'package:travel_vehicle_planner/home/components/about_travel.dart';
 import 'package:travel_vehicle_planner/home/components/about_vehicle.dart';
 import 'package:travel_vehicle_planner/home/components/curve_app_bar.dart';
 import 'package:travel_vehicle_planner/home/models/services.dart';
+import 'package:travel_vehicle_planner/hotel/models/hotel_model.dart';
 import 'package:travel_vehicle_planner/tp/models/travel_model.dart';
+import 'package:travel_vehicle_planner/vehicle/models/vehicle_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -287,10 +289,194 @@ class _HomePageState extends State<HomePage> {
             ),
           ),],
           if(hotels)...[
-            HotelContainer()
+            HotelContainer(),
+            Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      PageView.builder(
+                        controller: controller,
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentIndex = index % hotelDestination.length;
+                          });
+                        },
+                        itemCount: null, // will handle infinite loop manually
+                        itemBuilder: (context, index) {
+                          int wrappedIndex = index % hotelDestination.length;
+
+                          final destination = hotelDestination[wrappedIndex];
+
+                          if (destination.image != null && destination.image!.isNotEmpty) {
+                            double scale = max(
+                              0.6,
+                              (1 - (pageoffSet - index).abs() + 0.6),
+                            );
+                            double angle = (controller.position.haveDimensions
+                                    ? index.toDouble() - (controller.page ?? 0)
+                                    : index.toDouble() - 1) *
+                                5;
+                            angle = angle.clamp(-5, 5);
+
+                            return GestureDetector(
+                              onTap: () {
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 100 - (scale / 1.6 * 100),
+                                ),
+                                child: Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Transform.rotate(
+                                      angle: angle * pi / 90,
+                                      child: Hero(
+                                        tag: destination.price,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(25),
+                                          child: Image.asset(
+                                            destination.image![wrappedIndex % destination.image!.length],
+                                            height: 250,
+                                            width: 180,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                      Positioned(
+                        top: 330,
+                        child: Row(
+                          children: List.generate(
+                            hotelDestination.length,
+                            (index) => AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: const EdgeInsets.only(right: 15),
+                              width: currentIndex == index ? 30 : 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: currentIndex == index
+                                    ? Colors.black
+                                    : Colors.grey[300],
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
           ],
           if(vehicles)...[
-            VehicleBookingContainer()
+            VehicleBookingContainer(),
+            Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      PageView.builder(
+                        controller: controller,
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentIndex = index % vehiclesList.length;
+                          });
+                        },
+                        itemCount: null, // will handle infinite loop manually
+                        itemBuilder: (context, index) {
+                          int wrappedIndex = index % vehiclesList.length;
+
+                          final destination = vehiclesList[wrappedIndex];
+
+                          if (destination.image != null && destination.image!.isNotEmpty) {
+                            double scale = max(
+                              0.6,
+                              (1 - (pageoffSet - index).abs() + 0.6),
+                            );
+                            double angle = (controller.position.haveDimensions
+                                    ? index.toDouble() - (controller.page ?? 0)
+                                    : index.toDouble() - 1) *
+                                5;
+                            angle = angle.clamp(-5, 5);
+
+                            return GestureDetector(
+                              onTap: () {
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 100 - (scale / 1.6 * 100),
+                                ),
+                                child: Stack(
+                                  alignment: Alignment.topCenter,
+                                  children: [
+                                    Transform.rotate(
+                                      angle: angle * pi / 90,
+                                      child: Hero(
+                                        tag: destination.price,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(25),
+                                          child: Image.asset(
+                                            destination.image![wrappedIndex % destination.image!.length],
+                                            height: 250,
+                                            width: 180,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
+                      Positioned(
+                        top: 330,
+                        child: Row(
+                          children: List.generate(
+                            vehiclesList.length,
+                            (index) => AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: const EdgeInsets.only(right: 15),
+                              width: currentIndex == index ? 30 : 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: currentIndex == index
+                                    ? Colors.black
+                                    : Colors.grey[300],
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
           ]
         
         ],
