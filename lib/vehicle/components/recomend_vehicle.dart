@@ -11,7 +11,7 @@ class RecomendVehicle extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 2),
+      margin: const EdgeInsets.symmetric(vertical: 0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -20,8 +20,8 @@ class RecomendVehicle extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            height: 95,
-            width: screenWidth * 0.3,
+            height: 85,
+            width: screenWidth * 0.25,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
@@ -32,7 +32,7 @@ class RecomendVehicle extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
           // Expanded column to make text flexible
           Expanded(
             child: Column(
@@ -42,25 +42,25 @@ class RecomendVehicle extends StatelessWidget {
                 Text(
                   model.name,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 12,
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
                   ),
                   overflow: TextOverflow.ellipsis, // Handle overflow of long text
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     const Icon(
                       Icons.location_on,
                       color: Colors.black,
-                      size: 16,
+                      size: 10,
                     ),
                     Expanded(
                       child: Text(
                         model.location,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 10,
                           color: Colors.black.withOpacity(0.6),
                         ),
                         overflow: TextOverflow.ellipsis, // Handle overflow of long text
@@ -68,7 +68,7 @@ class RecomendVehicle extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     Text.rich(
@@ -95,7 +95,7 @@ class RecomendVehicle extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 4),
                 // Price below reviews
                 Text.rich(
                   TextSpan(
@@ -103,7 +103,7 @@ class RecomendVehicle extends StatelessWidget {
                       TextSpan(
                         text: "\$${model.price}",
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 15,
                           fontWeight: FontWeight.w500,
                           color: blueTextColor,
                         ),
@@ -111,7 +111,7 @@ class RecomendVehicle extends StatelessWidget {
                       TextSpan(
                         text: " /Person",
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           color: Colors.black.withOpacity(0.6),
                         ),
                       ),

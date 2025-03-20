@@ -4,7 +4,6 @@ import 'package:travel_vehicle_planner/auth/pages/login.dart';
 import 'package:travel_vehicle_planner/home/pages/home_main.dart';
 import 'package:travel_vehicle_planner/tp/const.dart';
 import 'package:travel_vehicle_planner/tp/models/onboard_model.dart';
-import 'package:travel_vehicle_planner/tp/pages/travel_home_screen.dart';
 
 class TravelOnBoardingScreen extends StatefulWidget {
   const TravelOnBoardingScreen({super.key});

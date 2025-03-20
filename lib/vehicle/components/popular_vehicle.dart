@@ -29,8 +29,8 @@ class PopularVehicle extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Container(
-            height: 210,
-            width: MediaQuery.of(context).size.width * 0.75,
+            height: 100,
+            width: MediaQuery.of(context).size.width * 0.55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               image: DecorationImage(
@@ -46,7 +46,7 @@ class PopularVehicle extends StatelessWidget {
                 Container(
                   color: Colors.black.withOpacity(0.7),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(6),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,7 +57,7 @@ class PopularVehicle extends StatelessWidget {
                             Text(
                               vehicleModel.name,
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 10,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -68,14 +68,14 @@ class PopularVehicle extends StatelessWidget {
                                 const Icon(
                                   Icons.location_on,
                                   color: Colors.white,
-                                  size: 18,
+                                  size: 10,
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
                                   vehicleModel.location,
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 14,
+                                    fontSize: 10,
                                   ),
                                 )
                               ],
@@ -86,14 +86,14 @@ class PopularVehicle extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.star_rounded,
-                              size: 22,
+                              size: 18,
                               color: Colors.amber[800],
                             ),
                             const SizedBox(width: 5),
                             Text(
                               vehicleModel.rate.toString(),
                               style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 13,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
