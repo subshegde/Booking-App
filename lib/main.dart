@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:travel_vehicle_planner/components/customRatingBar.dart';
 import 'package:travel_vehicle_planner/components/dynamic_checkboxList.dart';
 import 'package:travel_vehicle_planner/components/range_picker.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Travel Planner',
       theme: ThemeData(

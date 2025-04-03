@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:travel_vehicle_planner/common/helpers/navigations/appNavigation.dart';
 import 'package:travel_vehicle_planner/constant/baseurl/baseurl.dart';
 import 'package:travel_vehicle_planner/home/components/about_hotel.dart';
 import 'package:travel_vehicle_planner/home/components/about_travel.dart';
@@ -7,6 +8,7 @@ import 'package:travel_vehicle_planner/home/components/about_vehicle.dart';
 import 'package:travel_vehicle_planner/home/components/curve_app_bar.dart';
 import 'package:travel_vehicle_planner/home/models/services.dart';
 import 'package:travel_vehicle_planner/hotel/models/hotel_model.dart';
+import 'package:travel_vehicle_planner/profile/pages/profile.dart';
 import 'package:travel_vehicle_planner/tp/models/travel_model.dart';
 import 'package:travel_vehicle_planner/vehicle/models/vehicle_model.dart';
 
@@ -30,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     controller = PageController(
-      initialPage: 1000, // Large initial page for looping
+      initialPage: 1000,
       viewportFraction: 0.6,
     )..addListener(() {
         setState(() {
@@ -65,7 +67,9 @@ class _HomePageState extends State<HomePage> {
             centerTitle: true,
             leading: IconButton(onPressed: () {}, icon: const Icon(Icons.home)),
             actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.person))
+              IconButton(onPressed: () {
+                AppNavigation.push(context, ProfilePage());
+              }, icon: const Icon(Icons.person))
             ],
           ),
         ),

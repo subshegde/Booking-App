@@ -41,6 +41,11 @@ dependencies:
   logger:
   msh_checkbox: ^2.0.1
   flutter_svg: ^2.0.17
+  sqflite:
+  image_picker:
+  hive_flutter:
+  get:
+  url_launcher:
 
 dev_dependencies:
   flutter_test:
