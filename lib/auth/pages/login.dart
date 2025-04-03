@@ -6,7 +6,7 @@ import 'package:travel_vehicle_planner/auth/pages/signup.dart';
 import 'package:travel_vehicle_planner/common/helpers/navigations/appNavigation.dart';
 import 'package:travel_vehicle_planner/constant/colors/app_colors.dart';
 import 'package:travel_vehicle_planner/db/database_helper.dart';
-import 'package:travel_vehicle_planner/home/pages/home_main.dart';
+import 'package:travel_vehicle_planner/tabs/home/pages/home_main.dart';
 
 class LoginPage extends StatefulWidget {
   @override

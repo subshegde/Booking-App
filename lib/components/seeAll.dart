@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:travel_vehicle_planner/hotel/components/recomend.dart';
-import 'package:travel_vehicle_planner/hotel/models/hotel_model.dart';
-import 'package:travel_vehicle_planner/hotel/pages/hotel_details.dart';
-import 'package:travel_vehicle_planner/tp/const.dart';
-import 'package:travel_vehicle_planner/tp/models/travel_model.dart';
-import 'package:travel_vehicle_planner/tp/pages/place_detail.dart';
-import 'package:travel_vehicle_planner/tp/widgets/recomendate.dart';
-import 'package:travel_vehicle_planner/vehicle/components/recomend_vehicle.dart';
-import 'package:travel_vehicle_planner/vehicle/models/vehicle_model.dart';
-import 'package:travel_vehicle_planner/vehicle/pages/vehicle_details.dart';
+import 'package:travel_vehicle_planner/tabs/hotel/components/recomend.dart';
+import 'package:travel_vehicle_planner/tabs/hotel/models/hotel_model.dart';
+import 'package:travel_vehicle_planner/tabs/hotel/pages/hotel_details.dart';
+import 'package:travel_vehicle_planner/tabs/tp/const.dart';
+import 'package:travel_vehicle_planner/tabs/tp/models/travel_model.dart';
+import 'package:travel_vehicle_planner/tabs/tp/pages/place_detail.dart';
+import 'package:travel_vehicle_planner/tabs/tp/widgets/recomendate.dart';
+import 'package:travel_vehicle_planner/tabs/vehicle/components/recomend_vehicle.dart';
+import 'package:travel_vehicle_planner/tabs/vehicle/models/vehicle_model.dart';
+import 'package:travel_vehicle_planner/tabs/vehicle/pages/vehicle_details.dart';
 
 class SeeAllPage extends StatefulWidget {
   final String pagename;

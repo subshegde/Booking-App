@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:travel_vehicle_planner/components/customRatingBar.dart';
-import 'package:travel_vehicle_planner/components/dynamic_checkboxList.dart';
-import 'package:travel_vehicle_planner/components/range_picker.dart';
-import 'package:travel_vehicle_planner/components/sliderVertical.dart';
-import 'package:travel_vehicle_planner/onboard/onboard_travel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_vehicle_planner/others/onboard/onboard_travel.dart';
+import 'package:travel_vehicle_planner/tabs/home/pages/home_main.dart';
 
 void main() {
   runApp(const MyApp());
+}
+
+Future<bool> isLogin() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('isLogin') ?? false;
 }
 
 class MyApp extends StatelessWidget {
@@ -22,8 +25,20 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const TravelOnBoardingScreen(),
-      // home: VerticalOptionSelectionPage(),
+      home: FutureBuilder<bool>(
+        future: isLogin(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            if (snapshot.hasData && snapshot.data == true) {
+              return HomeMainPage();
+            } else {
+              return const TravelOnBoardingScreen();
+            }
+          }
+        },
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:travel_vehicle_planner/constant/colors/app_colors.dart';
 import 'dart:io';
 
 import 'package:travel_vehicle_planner/db/database_helper.dart';
@@ -49,10 +50,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
 Future<void> _register() async {
   if (_formKey.currentState!.validate()) {
-    bool exists = await _dbHelper.doesEmailOrUsernameExist('johndoe'); 
+    bool exists = await _dbHelper.doesEmailOrUsernameExist(emailController.text); 
     if (exists) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email or Username already exists!')),
+        const SnackBar(content: Text('Email or Username already exists!'),backgroundColor: AppColors.errorColor,),
       );
       return;
     }
@@ -72,12 +73,11 @@ Future<void> _register() async {
       clearFields();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registration Successful!')),
+        const SnackBar(content: Text('Registration Successful!'),backgroundColor: AppColors.green,),
       );
     } catch (e) {
-      print('$e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
+        SnackBar(content: Text('Error: $e'),backgroundColor: AppColors.errorColor,),
       );
     }
   }
