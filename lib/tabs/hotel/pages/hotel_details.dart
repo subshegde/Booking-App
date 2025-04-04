@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_vehicle_planner/common/helpers/navigations/appNavigation.dart';
 import 'package:travel_vehicle_planner/tabs/hotel/models/hotel_model.dart';
-import 'package:travel_vehicle_planner/tabs/more/pages/booking/models/home_booking.dart';
+import 'package:travel_vehicle_planner/tabs/hotel/pages/bookingPageHotel.dart';
 import 'package:travel_vehicle_planner/tabs/tp/const.dart';
 
 class HotelDetailScreen extends StatefulWidget {
@@ -16,259 +15,6 @@ class HotelDetailScreen extends StatefulWidget {
 class _HotelDetailScreenState extends State<HotelDetailScreen> {
   PageController pageController = PageController();
   int pageView = 0;
-
-  // Booking form variables
-  final _formKey = GlobalKey<FormState>();
-  String name = '';
-  String gender = 'Male';
-  String address = '';
-  String phone = '';
-  String email = '';
-  int numberOfPerson = 1;
-  DateTime? selectedDate;
-
-  void _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
-
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
-  void _showBookingDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Book This Hotel'),
-          content: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(labelText: 'Full Name'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => name = value!,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => email = value!,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(labelText: 'Phone'),
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your phone number';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => phone = value!,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(labelText: 'Address'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your address';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => address = value!,
-                  ),
-                  DropdownButtonFormField<String>(
-                    value: gender,
-                    items: ['Male', 'Female', 'Other']
-                        .map((label) => DropdownMenuItem(
-                              child: Text(label),
-                              value: label,
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        gender = value!;
-                      });
-                    },
-                    decoration: const InputDecoration(labelText: 'Gender'),
-                  ),
-                  TextFormField(
-                    decoration:
-                        const InputDecoration(labelText: 'Number of People'),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the number of people';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => numberOfPerson = int.parse(value!),
-                  ),
-                  TextFormField(
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'Booking Date',
-                      hintText: selectedDate == null
-                          ? 'Select a date'
-                          : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
-                    ),
-                    onTap: () => _selectDate(context),
-                    validator: (value) {
-                      if (selectedDate == null) {
-                        return 'Please select a date';
-                      }
-                      return null;
-                    },
-                  )
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  Navigator.pop(context);
-                  _bookHotel();
-                }
-              },
-              child: const Text('Confirm'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-
-double convertDollarToRupee(int dollars, {double conversionRate = 82.5}) {
-  return dollars * conversionRate;
-}
-
-  void _bookHotel() async {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    },
-  );
-
-  try {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? userId = prefs.getInt('id');
-
-    int price = widget.hotel.price;
-    double priceInDoubleRupe = convertDollarToRupee(price);
-    double totalPrice = priceInDoubleRupe * numberOfPerson;
-
-    final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-    final String formattedDate = selectedDate != null
-    ? dateFormat.format(selectedDate!)
-    : DateFormat('dd-MM-yyyy').format(DateTime.now());
-
-    final booking = HomeBookingModel(
-      name: name,
-      gender: gender,
-      address: address,
-      phone: phone,
-      email: email,
-      numberOfPerson: numberOfPerson,
-      hotelId: widget.hotel.id,
-      userId: userId!,
-      isPaymentDone: 0,
-      totalPrice: totalPrice,
-      date: formattedDate,
-    );
-
-    bool isBookingSuccessful = await BookingManager.addBooking(booking);
-
-    Navigator.pop(context);
-
-    if (isBookingSuccessful) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Booking Confirmed'),
-            content: Text(
-              'Thank you, $name! Your booking for ${widget.hotel.name} is confirmed.Please do payment at bookings page.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Booking Failed'),
-            content: const Text('Sorry, we could not process your booking. Please try again later.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  } catch (error) {
-    Navigator.pop(context);
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text('An error occurred: $error'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
-
    @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -581,7 +327,7 @@ double convertDollarToRupee(int dollars, {double conversionRate = 82.5}) {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: '\$${widget.hotel.price}',
+                          text: '\₹${widget.hotel.price}',
                           style: const TextStyle(
                             fontSize: 23,
                             fontWeight: FontWeight.w600,
@@ -603,7 +349,9 @@ double convertDollarToRupee(int dollars, {double conversionRate = 82.5}) {
             ),
             const Spacer(),
             TextButton(
-              onPressed: _showBookingDialog,
+              onPressed: (){
+               AppNavigation.push(context, HotelBookingPage(hotel: widget.hotel,));
+              },
               child: Container(
                 width: 110,
                 height: 70,

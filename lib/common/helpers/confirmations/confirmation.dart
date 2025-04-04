@@ -10,6 +10,7 @@ class CustomConfirmation extends StatelessWidget {
   final VoidCallback onClose;
   final VoidCallback onNo;
   final VoidCallback onYes;
+  final Color color;
 
   CustomConfirmation({
     required this.message,
@@ -19,6 +20,7 @@ class CustomConfirmation extends StatelessWidget {
     required this.onClose,
     required this.onNo,
     required this.onYes,
+    required this.color,
   });
 
   @override
@@ -47,7 +49,7 @@ class CustomConfirmation extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(iconData, color: AppColors.black, size: 32),
+                  Icon(iconData, color: color, size: 32),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -55,10 +57,10 @@ class CustomConfirmation extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.black,
+                            color: color,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -104,7 +106,7 @@ class CustomConfirmation extends StatelessWidget {
                   ElevatedButton(
                     onPressed: onYes,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.black,
+                      backgroundColor: color,
                       minimumSize: const Size(120, 40),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -136,12 +138,15 @@ Future<void> showCustomConfirmation({
   required String title,
   required VoidCallback onNo,
   required VoidCallback onYes,
+
+  required Color backgroundColor,
 }) async {
   final overlay = Overlay.of(context);
   OverlayEntry? overlayEntry;
 
   overlayEntry = OverlayEntry(
     builder: (context) => CustomConfirmation(
+      color:backgroundColor,
       message: message,
       title: title,
       backgroundColor: AppColors.white,

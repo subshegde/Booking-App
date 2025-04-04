@@ -36,13 +36,13 @@ List<HotelDestination> hotelDestination = [
     ],
     location: "Hampi,Karnataka",
     review: random.nextInt(300) + 25,
-    price: 1999,
+    price: 1000,
     description: description,
     rate: 5.0,
   ),
   HotelDestination(
     id: 7,
-    price: 5000,
+    price: 2000,
     name: "Aditya Hotel",
     image: [
       "${baseurlHotelPopular}mysore-1.jpg",
@@ -60,7 +60,7 @@ List<HotelDestination> hotelDestination = [
     id: 3,
     name: "Chikkamane Homestay",
     review: random.nextInt(300) + 25,
-    price: 599,
+    price: 500,
     category: 'recomend',
     image: [
       "${baseurlHotelRecomend}chikmangaluru-1.jpg",
@@ -76,7 +76,7 @@ List<HotelDestination> hotelDestination = [
     id: 8,
     name: "Zostel",
     review: random.nextInt(300) + 25,
-    price: 777,
+    price: 700,
     category: "popular",
     image: [
       "${baseurlHotelPopular}uttarakannada-1.jpg",
@@ -92,7 +92,7 @@ List<HotelDestination> hotelDestination = [
     id: 1,
     name: "Breeze Resort",
     review: random.nextInt(300) + 25,
-    price: 920,
+    price: 1000,
     category: 'recomend',
     image: [
       "${baseurlHotelRecomend}shimogga-1.jpg",
@@ -109,7 +109,7 @@ List<HotelDestination> hotelDestination = [
     name: "Paradise Lagoon",
     review: random.nextInt(300) + 25,
     category: "popular",
-    price: 199,
+    price: 500,
     image: [
       "${baseurlHotelPopular}udupi-3.jpg",
       "${baseurlHotelPopular}udupi-1.jpg",
@@ -125,7 +125,7 @@ List<HotelDestination> hotelDestination = [
     name: "The VANA - Valley Retreat",
     category: "recomend",
     review: random.nextInt(300) + 25,
-    price: 499,
+    price: 2000,
     image: [
       "${baseurlHotelRecomend}shravanabelagola-1.jpg",
       "${baseurlHotelRecomend}shravanabelagola-2.jpg",
@@ -141,7 +141,7 @@ List<HotelDestination> hotelDestination = [
     name: "Jungle Hill Resort",
     review: random.nextInt(300) + 25,
     category: "recomend",
-    price: 99,
+    price: 1000,
     image: [
       "${baseurlHotelRecomend}coorg-4.jpg",
       "${baseurlHotelRecomend}coorg-2.jpg",

@@ -95,6 +95,7 @@ class _MoreMainPageState extends State<MoreMainPage> {
       onTap: () async {
         if (which == 'logout') {
           showCustomConfirmation(
+            backgroundColor: Colors.black,
             context: context,
             message: 'Are you sure you want to logout?',
             title: 'Logout Confirmation',

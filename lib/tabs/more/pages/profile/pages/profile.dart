@@ -206,6 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return GestureDetector(
       onTap: () {
         showCustomConfirmation(
+          backgroundColor: Colors.black,
           context: context,
           message: 'Are you sure you want to logout?',
           title: 'Logout Confirmation',
