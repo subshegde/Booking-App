@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_vehicle_planner/common/helpers/confirmations/confirmation.dart';
+import 'package:travel_vehicle_planner/common/helpers/snackbar/snackbar.dart';
 import 'package:travel_vehicle_planner/constant/colors/app_colors.dart';
+import 'package:travel_vehicle_planner/db/database_helper.dart';
 import 'package:travel_vehicle_planner/tabs/hotel/models/hotel_model.dart';
 import 'package:travel_vehicle_planner/tabs/more/pages/booking/models/home_booking.dart';
 
@@ -53,17 +58,76 @@ class HotelBookingTab extends StatefulWidget {
 
 class _HotelBookingTabState extends State<HotelBookingTab> {
   List<HomeBookingModel> homeBooking = [];
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+
+  double amount = 0.0;
+
+  late Razorpay _razorpay;
 
   @override
   void initState() {
     super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     getData();
+  }
+
+  @override
+  void dispose() {
+    _razorpay.clear();
+    super.dispose();
+  }
+
+  int bookingId = 0;
+  int hotelId = 0;
+  int userId = 0;
+  int isPaymentDone = 0;
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    CustomSnackBar.showPaymentSuccessSnackBar(
+        context, '🎉 Payment Successful!', AppColors.green);
+    _dbHelper.markPaymentAsDone(
+        isPaymentDone: isPaymentDone,
+        userId: userId,
+        hotelId: hotelId,
+        bookingId: bookingId);
+    getData();
+    setState(() {});
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    CustomSnackBar.showPaymentSuccessSnackBar(
+        context, 'Exited!', AppColors.errorColor);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {}
+
+  void payNow(
+    dynamic totalAmount,
+    String name,
+    String description,
+    String userPhone,
+    String userEmail,
+  ) {
+    var options = {
+      'key': 'rzp_test_yRylqYw9CuyFg7',
+      'amount': totalAmount * 100,
+      'name': name,
+      'description': '$description booking',
+      'timeout': 120,
+      // add users contact & email
+      'prefill': {'contact': userPhone, 'email': userEmail}
+    };
+    _razorpay.open(options);
   }
 
   Future<void> getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('id');
     homeBooking = await BookingManager.getAllBookings(userId!);
+
     setState(() {});
   }
 
@@ -104,6 +168,7 @@ class _HotelBookingTabState extends State<HotelBookingTab> {
                     .map((e) => e.id == booking.hotelId ? e : null)
                     .firstWhere((e) => e != null) as HotelDestination;
                 HomeBookingModel bokkingModel = HomeBookingModel(
+                  id: booking.id,
                   address: booking.address,
                   name: booking.name,
                   gender: booking.gender,
@@ -122,6 +187,31 @@ class _HotelBookingTabState extends State<HotelBookingTab> {
                   location: hotel.location,
                   rating: hotel.rate,
                   url: hotel.image![0],
+                  onTapPay: (booking, hotelname) {
+                    amount = booking.totalPrice!;
+                    String personName = booking.name!;
+                    payNow(amount, personName, hotelname,
+                    booking.phone.toString(), booking.email);
+                    bookingId = booking.id!;
+                    hotelId = booking.hotelId!;
+                    userId = booking.userId!;
+                    isPaymentDone = 1;
+                    setState(() {});
+                  },
+                  onCancelBooking: () {
+                    showCustomConfirmation(
+                      backgroundColor: AppColors.errorColor,
+                      context: context,
+                      message: 'Are you sure you want to cancel?',
+                      title: 'Cancel Confirmation',
+                      onNo: () {},
+                      onYes: () {
+                        _dbHelper.removeBookingById(booking.id!);
+                        CustomSnackBar.showPaymentSuccessSnackBar(context, '${hotel.name} booking has been canceled successfully!', AppColors.green);
+                        getData();
+                      },
+                    );
+                  },
                 );
               },
             ),
@@ -138,6 +228,8 @@ class BookingCard extends StatelessWidget {
   final String url;
   final String location;
   final double? rating;
+  final Function(HomeBookingModel booking, String hotelname)? onTapPay;
+  final Function() onCancelBooking;
 
   const BookingCard({
     Key? key,
@@ -146,6 +238,8 @@ class BookingCard extends StatelessWidget {
     required this.location,
     required this.hotelName,
     required this.rating,
+    required this.onTapPay,
+    required this.onCancelBooking,
   }) : super(key: key);
 
   @override
@@ -260,58 +354,60 @@ class BookingCard extends StatelessWidget {
                     style:
                         const TextStyle(fontSize: 16, color: Colors.black54)),
                 const SizedBox(height: 12),
-                Text(
-                  '₹ ${booking.totalPrice?.toStringAsFixed(2) ?? '0.00'}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '₹ ${booking.totalPrice?.toStringAsFixed(2) ?? '0.00'}',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (booking.isPaymentDone == 1)
+                      Image.asset(
+                        'assets/global/paid.png',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      )
+                  ],
                 ),
                 const SizedBox(height: 12),
                 Column(
                   children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: booking.isPaymentDone == 1
-                            ? null
-                            : () {
-                                // Add payment functionality here
-                              },
-                        icon: const Icon(Icons.payment, color: Colors.white),
-                        label: Text(
-                          booking.isPaymentDone == 1
-                              ? 'Already Paid'
-                              : 'Pay Now',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: booking.isPaymentDone == 1
-                              ? Colors.grey
-                              : Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                    if (booking.isPaymentDone != 1)
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            if (onTapPay != null) {
+                              onTapPay!(booking, hotelName);
+                            }
+                          },
+                          icon: const Icon(Icons.payment, color: Colors.white),
+                          label: const Text(
+                            'Pay Now',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.green,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+
+                    // Cancel Button (Only if not paid)
                     if (booking.isPaymentDone == 0) const SizedBox(height: 10),
                     if (booking.isPaymentDone == 0)
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
-                          onPressed: () {
-                            showCustomConfirmation(
-                              backgroundColor: AppColors.errorColor,
-                              context: context,
-                              message: 'Are you sure you want to cancel?',
-                              title: 'Cancel Confirmation',
-                              onNo: () {},
-                              onYes: () {},
-                            );
-                          },
+                          onPressed: onCancelBooking,
                           icon: const Icon(Icons.cancel, color: Colors.white),
                           label: const Text(
                             'Cancel Booking',

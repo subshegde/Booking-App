@@ -47,6 +47,9 @@ dependencies:
   get:
   url_launcher:
   intl:
+  razorpay_flutter:
+  fluttertoast:
+  lottie:
 
 dev_dependencies:
   flutter_test:
@@ -95,6 +98,9 @@ flutter:
     - assets/vehicle/two_wheeler_bikes/
     - assets/vehicle/two_wheeler_scooty/
     - assets/vehicle/women_cycle/
+
+    - assets/lottie/
+    - assets/global/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

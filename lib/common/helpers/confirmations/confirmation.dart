@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:travel_vehicle_planner/constant/colors/app_colors.dart';
@@ -79,7 +80,6 @@ class CustomConfirmation extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -88,7 +88,7 @@ class CustomConfirmation extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.white,
                       minimumSize: const Size(120, 40),
-                      side: const BorderSide(color: AppColors.black,width: 2),
+                      side: const BorderSide(color: AppColors.black, width: 2),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -102,7 +102,9 @@ class CustomConfirmation extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 6,),
+                  const SizedBox(
+                    width: 6,
+                  ),
                   ElevatedButton(
                     onPressed: onYes,
                     style: ElevatedButton.styleFrom(
@@ -131,14 +133,12 @@ class CustomConfirmation extends StatelessWidget {
   }
 }
 
-
 Future<void> showCustomConfirmation({
   required BuildContext context,
   required String message,
   required String title,
   required VoidCallback onNo,
   required VoidCallback onYes,
-
   required Color backgroundColor,
 }) async {
   final overlay = Overlay.of(context);
@@ -146,7 +146,7 @@ Future<void> showCustomConfirmation({
 
   overlayEntry = OverlayEntry(
     builder: (context) => CustomConfirmation(
-      color:backgroundColor,
+      color: backgroundColor,
       message: message,
       title: title,
       backgroundColor: AppColors.white,

@@ -1,6 +1,7 @@
 import 'package:travel_vehicle_planner/db/database_helper.dart';
 
 class HomeBookingModel {
+  int? id;
   String name;
   String gender;
   String address;
@@ -25,6 +26,7 @@ class HomeBookingModel {
     required this.isPaymentDone,
     required this.totalPrice,
     required this.date,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -62,6 +64,7 @@ class BookingManager {
     final bookingsData = await DatabaseHelper().getAllBookings(userId);
     return bookingsData.map((data) {
       return HomeBookingModel(
+        id: data['id'],
         name: data['name'],
         date: data['date'],
         gender: data['gender'],

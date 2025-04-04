@@ -235,6 +235,28 @@ class DatabaseHelper {
     return await db.delete('hotelbookings', where: 'id = ?', whereArgs: [id]);
   }
 
+  // Make payment as done
+  Future<int> markPaymentAsDone({
+    required int isPaymentDone,
+    required int userId,
+    required int hotelId,
+    required int bookingId,
+  }) async {
+    final db = await database;
+
+    try {
+      return await db.update(
+        'hotelbookings',
+        {'isPaymentDone': isPaymentDone},
+        where: 'id = ? AND userId = ? AND hotelId = ?',
+        whereArgs: [bookingId, userId, hotelId],
+      );
+    } catch (e) {
+      print('Error updating payment status: $e');
+      return -1; // Return -1 if update fails
+    }
+  }
+
   // Verify User Credentials
   Future<Map<String, dynamic>?> verifyUserCredentials(
       String email, String password) async {
