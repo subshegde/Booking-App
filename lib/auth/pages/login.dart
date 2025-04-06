@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hive/hive.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travel_vehicle_planner/auth/api/google_signin_api.dart';
 import 'package:travel_vehicle_planner/auth/pages/signup.dart';
 import 'package:travel_vehicle_planner/common/helpers/navigations/appNavigation.dart';
 import 'package:travel_vehicle_planner/constant/colors/app_colors.dart';
@@ -15,18 +18,48 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  bool isChecked = false;
   bool isPasswordVisible = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
+  bool rememberMe = false;
+  late Box box1;
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  @override
+  void initState() {
+    super.initState();
+    createBox().then((_){
+      getRememberedData();
+    });  }
+
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> createBox() async{
+    if(!Hive.isBoxOpen('authBox')){
+      box1 = await Hive.openBox('authBox');
+    }else{
+      box1 = Hive.box('authBox');
+    }
+  }
+
+  void getRememberedData(){
+    if(box1.get('rememberMe') != null){
+      rememberMe = box1.get('rememberMe');
+    }
+    if(rememberMe){
+      emailController.text = box1.get('email');
+      passwordController.text = box1.get('password');
+    }
+    setState(() {});
   }
 
   Future<void> _login() async {
@@ -51,6 +84,8 @@ class _LoginPageState extends State<LoginPage> {
       prefs.setString('role', userData['role']);
       prefs.setString('gender', userData['gender']);
       prefs.setBool('isLogin', true);
+
+      saveData(email, password,rememberMe);
       
       AppNavigation.pushReplaceMent(context, HomeMainPage());
 
@@ -61,6 +96,19 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
+
+void saveData(String email, String password, bool rememberMe) async {
+  if (rememberMe) {
+    box1.put('rememberMe', true);
+    box1.put('email', email);
+    box1.put('password', password);
+  } else {
+    box1.delete('rememberMe');
+    box1.delete('email');
+    box1.delete('password');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,14 +202,14 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             MSHCheckbox(
                               size: 20,
-                              value: isChecked,
+                              value: rememberMe,
                               colorConfig: MSHColorConfig.fromCheckedUncheckedDisabled(
                                 checkedColor: Colors.blue,
                               ),
                               style: MSHCheckboxStyle.stroke,
                               onChanged: (selected) {
                                 setState(() {
-                                  isChecked = selected;
+                                  rememberMe = selected;
                                 });
                               },
                             ),
@@ -207,12 +255,15 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 15),
-                    const Row(
+                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image(
-                          width: 30,
-                          image: AssetImage('assets/icons/auth/google.png'),
+                        GestureDetector(
+                          onTap: _handleGoogleSignIn,
+                          child: const Image(
+                            width: 30,
+                            image: AssetImage('assets/icons/auth/google.png'),
+                          ),
                         ),
                       ],
                     ),
@@ -251,4 +302,9 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  //  google sign in method
+    Future<void> _handleGoogleSignIn() async {
+      await GoogleSigninApi.login();
+    }
 }

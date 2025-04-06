@@ -50,6 +50,8 @@ dependencies:
   razorpay_flutter:
   fluttertoast:
   lottie:
+  hive:
+  google_sign_in:
 
 dev_dependencies:
   flutter_test:
