@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:travel_vehicle_planner/common/helpers/navigations/appNavigation.dart';
 import 'package:travel_vehicle_planner/tabs/tp/const.dart';
 import 'package:travel_vehicle_planner/tabs/tp/models/travel_model.dart';
+import 'package:travel_vehicle_planner/tabs/tp/pages/bookingPageTravel.dart';
 
 class PlaceDetailScreen extends StatefulWidget {
   final TravelDestination destination;
@@ -326,7 +328,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: '\$${widget.destination.price}',
+                          text: '\₹${widget.destination.price}',
                           style: const TextStyle(
                             fontSize: 23,
                             fontWeight: FontWeight.w600,
@@ -348,7 +350,9 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
             ),
             const Spacer(),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                AppNavigation.push(context, TravelBookingPage(travel: widget.destination,));
+              },
               child: Container(
                 width: 110,
                 height: 70,

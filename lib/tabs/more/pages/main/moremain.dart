@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_vehicle_planner/auth/pages/login.dart';
-import 'package:travel_vehicle_planner/tabs/more/pages/booking/pages/booking.dart';
+import 'package:travel_vehicle_planner/tabs/more/pages/booking/pages/hotel_booking.dart';
 import 'package:travel_vehicle_planner/common/helpers/confirmations/confirmation.dart';
 import 'package:travel_vehicle_planner/common/helpers/confirmations/isLogin.dart';
 import 'package:travel_vehicle_planner/common/helpers/navigations/appNavigation.dart';

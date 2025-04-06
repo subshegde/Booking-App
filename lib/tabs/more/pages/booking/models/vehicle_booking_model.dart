@@ -1,6 +1,6 @@
 import 'package:travel_vehicle_planner/db/database_helper.dart';
 
-class HomeBookingModel {
+class VehicleBookingModel {
   int? id;
   String name;
   String gender;
@@ -11,17 +11,17 @@ class HomeBookingModel {
   int numberOfPerson;
   int isPaymentDone;
   double totalPrice;
-  int hotelId; // Reference to hotel ID
+  int vehicleId; // Reference to Vehicle ID
   int userId; // Reference to user ID
 
-  HomeBookingModel({
+  VehicleBookingModel({
     required this.name,
     required this.gender,
     required this.address,
     required this.phone,
     required this.email,
     required this.numberOfPerson,
-    required this.hotelId,
+    required this.vehicleId,
     required this.userId,
     required this.isPaymentDone,
     required this.totalPrice,
@@ -37,7 +37,7 @@ class HomeBookingModel {
       'phone': phone,
       'email': email,
       'numberOfPerson': numberOfPerson,
-      'hotelId': hotelId,
+      'vehicleId': vehicleId,
       'userId': userId,
       'isPaymentDone': isPaymentDone,
       'totalPrice': totalPrice,
@@ -46,11 +46,11 @@ class HomeBookingModel {
   }
 }
 
-class BookingManager {
+class VehicleBookingManager {
   // Add Booking
-  static Future<bool> addBooking(HomeBookingModel booking) async {
+  static Future<bool> addVehicleBooking(VehicleBookingModel booking) async {
     try {
-      final result = await DatabaseHelper().insertBooking(booking.toMap());
+      final result = await DatabaseHelper().insertVehicleBooking(booking.toMap());
       return result > 0; // Return true if insertion was successful
     } catch (e) {
       print('Error adding booking: $e');
@@ -60,10 +60,10 @@ class BookingManager {
 
   // Get All Bookings
 // Get All Bookings for a Specific User
-  static Future<List<HomeBookingModel>> getAllBookings(int userId) async {
-    final bookingsData = await DatabaseHelper().getAllBookings(userId);
+  static Future<List<VehicleBookingModel>> getAllVehicleBookings(int userId) async {
+    final bookingsData = await DatabaseHelper().getAllVehicleBookings(userId);
     return bookingsData.map((data) {
-      return HomeBookingModel(
+      return VehicleBookingModel(
         id: data['id'],
         name: data['name'],
         date: data['date'],
@@ -72,7 +72,7 @@ class BookingManager {
         phone: data['phone'],
         email: data['email'],
         numberOfPerson: data['numberOfPerson'],
-        hotelId: data['hotelId'],
+        vehicleId: data['vehicleId'],
         userId: data['userId'],
         isPaymentDone: data['isPaymentDone'],
         totalPrice: data['totalPrice'],
@@ -81,7 +81,7 @@ class BookingManager {
   }
 
   // Remove Booking
-  Future<void> removeBooking(int id) async {
-    await DatabaseHelper().removeBookingById(id);
+  Future<void> removeVehicleBooking(int id) async {
+    await DatabaseHelper().removeVehicleBookingById(id);
   }
 }

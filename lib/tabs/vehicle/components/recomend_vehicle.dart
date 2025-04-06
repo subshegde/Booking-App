@@ -101,7 +101,7 @@ class RecomendVehicle extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: "\$${model.price}",
+                        text: "\₹${model.price}",
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,

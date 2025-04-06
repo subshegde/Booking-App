@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_vehicle_planner/constant/colors/app_colors.dart';
-import 'package:travel_vehicle_planner/tabs/hotel/models/hotel_model.dart';
-import 'package:travel_vehicle_planner/tabs/more/pages/booking/models/hotel_booking_model.dart';
+import 'package:travel_vehicle_planner/tabs/more/pages/booking/models/travel_booking_model.dart';
+import 'package:travel_vehicle_planner/tabs/tp/models/travel_model.dart';
 
-class HotelBookingPage extends StatefulWidget {
-  final HotelDestination hotel;
-  const HotelBookingPage({Key? key, required this.hotel}) : super(key: key);
+class TravelBookingPage extends StatefulWidget {
+  final TravelDestination travel;
+  const TravelBookingPage({Key? key, required this.travel}) : super(key: key);
 
   @override
-  _HotelBookingPageState createState() => _HotelBookingPageState();
+  _TravelBookingPageState createState() => _TravelBookingPageState();
 }
 
-class _HotelBookingPageState extends State<HotelBookingPage> {
+class _TravelBookingPageState extends State<TravelBookingPage> {
   final _formKey = GlobalKey<FormState>();
   String name = '', email = '', phone = '', address = '';
   String? gender;
@@ -36,7 +36,7 @@ class _HotelBookingPageState extends State<HotelBookingPage> {
     }
   }
 
- void _bookHotel() async {
+ void _bookTravel() async {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -51,7 +51,7 @@ class _HotelBookingPageState extends State<HotelBookingPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('id');
 
-    int price = widget.hotel.price;
+    int price = widget.travel.price;
     double totalPrice = price.toDouble() * numberOfPerson;
 
     final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
@@ -59,21 +59,21 @@ class _HotelBookingPageState extends State<HotelBookingPage> {
         ? dateFormat.format(selectedDate!)
         : DateFormat('dd-MM-yyyy').format(DateTime.now());
 
-    final booking = HomeBookingModel(
+    final booking = TravelBookingModel(
       name: name,
       gender: gender ?? '',
       address: address,
       phone: phone,
       email: email,
       numberOfPerson: numberOfPerson,
-      hotelId: widget.hotel.id,
+      travelId: widget.travel.id,
       userId: userId!,
       isPaymentDone: 0,
       totalPrice: totalPrice,
       date: formattedDate,
     );
 
-    bool isBookingSuccessful = await BookingManager.addBooking(booking);
+    bool isBookingSuccessful = await TravelBookingManager.addTravelBooking(booking);
 
     Navigator.pop(context);
     _showBookingResult(isBookingSuccessful);
@@ -129,7 +129,7 @@ void _showBookingResult(bool isSuccess) {
               const SizedBox(height: 12),
               Text(
                 isSuccess
-                    ? 'Thank you, $name! Your booking for ${widget.hotel.name} is confirmed.\n\nPlease proceed to the payment page.'
+                    ? 'Thank you, $name! Your booking for ${widget.travel.name} is confirmed.\n\nPlease proceed to the payment page.'
                     : 'Sorry, we couldn’t process your booking. Please try again later.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 16),
@@ -185,7 +185,7 @@ void _showBookingResult(bool isSuccess) {
         backgroundColor: Colors.white,
         elevation: 2,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text('Book This Hotel',
+        title: const Text('Book This Travel',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: Padding(
@@ -208,7 +208,7 @@ void _showBookingResult(bool isSuccess) {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      _bookHotel();
+                      _bookTravel();
                     }
                   },
                   style: ElevatedButton.styleFrom(

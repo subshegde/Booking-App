@@ -101,7 +101,7 @@ class Recomendate extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: "\$${destination.price}",
+                        text: "\₹${destination.price}",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
